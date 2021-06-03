@@ -1,40 +1,46 @@
-const express = require('express');
-const mysql = require("mysql");
-const cors = require("cors");
+const express = require('express')
+const cors = require('cors')
+const mysql = require('mysql')
+//const bodyParser = require('body-parser')
+//const cookieParser = require('cookie-parser')
+//const session = require('express-session')
+//const mongoose = require('mongoose')
+//const dotenv =require('dotenv')
+const app = express()
+const routesURLS = require('./routes/routes')
 
 
+//dotenv.config()
+//mongoose.connect(process.env.DATABASE_ACCESS, () => {console.log('database connected..')})
 
-const app = express();
 
-app.use(express.json());
-app.use(cors());
+app.use(express.json())
+app.use(cors())
 
-const db = mysql.createConnection({
-    user: "root",
-    host: "localhost",
-    password:"",
-    database: "zero"
-});
+/*app.use(cors({
+    origin:["http://localhost:4000"],
+    methods: ["GET", "POST"],
+    credentials: true,
+}))
+app.use(cookieParser())
 
-app.post('/register', (req, res)=>{
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
+//cookie session 
+app.use(session({
+    key: "userId",
+    secret: "Lovestrant",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 60 * 60 * 24,
+    },
+}))
+*/
 
-    const firstname = req.body.firstname;
-    const lastname = req.body.lastname;
-    const phonenumber = req.body.phonenumber;
-    const password = req.body.password;
-    const securitykey = req.body.securitykey;
+app.use('/app',routesURLS)
 
-    db.query(
-        "INSERT INTO authenticationdb(firstname, lastname, phonenumber, password, securitykey) values ?,?,?,?,?",
-        [firstname,lastname,phonenumber,password,securitykey],
-        (error, result)=>{
-            console.log(error);
-            console.log(result);
-        }
-    );
-});
 
-app.listen(3003, ()=>{
-   
-    console.log('running seever');
-});
+app.listen(4000, () =>{
+    console.log('server running..')
+})
